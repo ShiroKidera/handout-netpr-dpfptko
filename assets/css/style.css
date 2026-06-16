@@ -1,0 +1,1046 @@
+/* =========================================================
+   地方選挙におけるSNS・AI時代のネット活用 — シンプル版
+   要素：h1 / h2 / h3 / p / ul のみ
+   原則：上寄せ。表紙と質疑応答のみ中央。
+   ========================================================= */
+
+:root {
+  --bg: #fbfbfd;
+  --bg-dark: #000000;
+  --text: #1d1d1f;
+  --text-light: #6e6e73;
+  --text-on-dark: #f5f5f7;
+  --text-on-dark-light: #a1a1a6;
+  --accent: #003f88;
+  --line: #d2d2d7;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+body {
+  font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont,
+    "Hiragino Sans", "ヒラギノ角ゴシック", "Yu Gothic", "游ゴシック",
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  font-weight: 400;
+  font-feature-settings: "palt" 1;
+}
+
+/* ───── セクション基本（上寄せ） ───── */
+section {
+  height: 100vh;
+  min-height: 100vh;
+  width: 100%;
+  padding: 6vh 6vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(180deg, rgba(130, 130, 145, 0) 0%, rgba(130, 130, 145, 0.28) 100%);
+  scroll-snap-align: start;
+}
+
+section:nth-child(even) { background-color: #ffffff; }
+
+.inner {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ───── 表紙 / 質疑応答（中央） ───── */
+section.hero, section.end {
+  background: var(--bg-dark);
+  color: var(--text-on-dark);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* 表紙の背景画像とフィルター */
+.hero-bg, .end-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-veil, .end-veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.62);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* 暗背景セクション内の文字は白系で上書き */
+.end h2,
+.end h3,
+.end p {
+  color: var(--text-on-dark);
+}
+
+/* 質疑応答のタイトルを少し上に */
+.end h2 {
+  margin-bottom: 0.6em;
+}
+
+/* 質疑応答下部の連絡リンク */
+.end-links {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  margin-top: 1.5em;
+}
+
+/* PCで PDF ボタンを下段に送るための改行ダミー */
+.end-links__break {
+  flex-basis: 100%;
+  height: 0;
+}
+.end-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 28px 10px 10px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  text-decoration: none;
+  font-size: 22px;
+  font-weight: 500;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.3s,
+              box-shadow 0.3s;
+}
+.end-link__icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #fff;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.end-link--mail .end-link__icon {
+  background: #003f88;
+  box-shadow: 0 6px 16px rgba(0, 63, 136, 0.45);
+}
+.end-link--line .end-link__icon {
+  background: #06c755;
+  box-shadow: 0 6px 16px rgba(6, 199, 85, 0.45);
+}
+.end-link--pdf .end-link__icon {
+  background: #cb171d;
+  box-shadow: 0 6px 16px rgba(203, 23, 29, 0.45);
+}
+.end-link:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.18);
+}
+.end-link:hover .end-link__icon {
+  transform: scale(1.1) rotate(-6deg);
+}
+
+@media (max-width: 768px) {
+  /* 質疑応答セクションは上下padding対称にして画面中央へ */
+  section.end {
+    padding-top: 8vh;
+    padding-bottom: 8vh;
+  }
+
+  .end-links {
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 1.2em;
+  }
+  .end-links__break { display: none; }
+  .end-link {
+    font-size: 16px;
+    padding: 8px 22px 8px 8px;
+    gap: 12px;
+  }
+  .end-link__icon {
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
+  }
+}
+
+/* ───── 見出し ───── */
+h1 {
+  font-size: 88px;
+  font-weight: 900;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+h2 {
+  font-size: 68px;
+  font-weight: 900;
+  line-height: 1.2;
+  color: var(--text);
+  margin-bottom: 0.5em;
+}
+
+h3 {
+  font-size: 44px;
+  font-weight: 900;
+  line-height: 1.3;
+  color: #003f88;
+  margin-bottom: 0.2em;
+}
+
+/* ───── 本文（p / ul） ───── */
+p, ul {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+p { margin-bottom: 0.6em; }
+p:last-child { margin-bottom: 0; }
+
+ul {
+  list-style: none;
+  margin-top: 0.5em;
+  margin-left: 10px;
+  max-width: 1300px;
+  margin-bottom: 0.5em;
+}
+
+ul li {
+  padding: 0.2em 0 0.2em 1.5em;
+  position: relative;
+  color: var(--text);
+}
+
+ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  /* 1行目テキスト中央に揃える */
+  top: 0.43em;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  background: #fabe00;
+}
+
+/* 表紙のスピーカー情報 */
+.hero p.speaker {
+  font-size: 20px;
+  color: #ffffff;
+  margin-top: 3em;
+  font-weight: 400;
+  line-height: 1.6em;
+}
+
+/* ───── セクション番号 ───── */
+.sec-num {
+  position: absolute;
+  top: 4vh;
+  right: 6vw;
+  font-size: 16px;
+  color: var(--text-light);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+.hero .sec-num, .end .sec-num { color: var(--text-on-dark-light); }
+
+/* ───── reveal アニメーション ───── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal:nth-child(2) { transition-delay: 0.1s; }
+.reveal:nth-child(3) { transition-delay: 0.2s; }
+.reveal:nth-child(4) { transition-delay: 0.3s; }
+.reveal:nth-child(5) { transition-delay: 0.4s; }
+.reveal:nth-child(6) { transition-delay: 0.5s; }
+
+/* ───── 比較カード（04） ───── */
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 0.8em;
+}
+.compare .card {
+  padding: 36px 32px;
+  border-radius: 22px;
+  background: #f5f5f7;
+}
+.compare .card.flow { background: linear-gradient(135deg, #5a5a5a 0%, #000000 95%); }
+.compare .card.stock { background: linear-gradient(135deg, #5a5a5a 0%, #000000 95%); }
+.compare .card h3 {
+  color: #fabe00;
+  margin-bottom: 0.5em;
+}
+.compare .card p {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 0.3em;
+  color: #ffffff;
+}
+.compare .card p:last-child { margin-bottom: 0; }
+
+/* ───── 強調用ユーティリティ ───── */
+.hl     { color: #fabe00; }
+.t-red  { color: #cb171d; }
+.t-navy { color: #003f88; }
+.kakko  { font-weight: 400; }
+.tilde  { font-weight: 400; }
+
+/* スマホ時のみ改行する <br class="sp-br"> */
+.sp-br { display: none; }
+@media (max-width: 768px) {
+  .sp-br { display: inline; }
+}
+
+/* PC時のみ改行する <br class="pc-br"> */
+.pc-br { display: inline; }
+@media (max-width: 768px) {
+  .pc-br { display: none; }
+}
+
+/* ───── チップ（11 ポッドキャスト） ───── */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 1.5em;
+}
+.chips a {
+  padding: 0.4em 1em;
+  background: #f5f5f7;
+  border-radius: 100px;
+  font-size: 22px;
+  color: var(--text);
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  transition: background 0.3s, color 0.3s, transform 0.3s;
+}
+.chips a::after {
+  content: "↗";
+  font-size: 0.9em;
+  color: var(--text-light);
+  transition: color 0.3s;
+}
+.chips a:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-2px);
+}
+.chips a:hover::after { color: #fff; }
+
+/* ───── 01 セクション右下ロゴ（透かし） ───── */
+.sec-corner-img {
+  position: absolute;
+  right: 6vw;
+  bottom: 4vh;
+  width: 60%;
+  height: auto;
+  filter: grayscale(1);
+  opacity: 0.12;
+  z-index: 0;
+  pointer-events: none;
+}
+
+section.search-bg .inner,
+section.staff-bg .inner,
+section.x-bg .inner,
+section.chrome-bg .inner,
+section.policies-bg .inner {
+  height: 100%;
+  position: relative;
+  z-index: 0;
+}
+
+section.search-bg .inner::after,
+section.staff-bg .inner::after,
+section.x-bg .inner::after,
+section.chrome-bg .inner::after,
+section.policies-bg .inner::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 40%;
+  height: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 12px;
+  pointer-events: none;
+  z-index: -1;
+}
+section.search-bg .inner::after { background-image: url("../image/search.jpg"); }
+section.staff-bg .inner::after { background-image: url("../image/accesibility.jpg"); }
+section.x-bg .inner::after { background-image: url("../image/x.jpg"); }
+section.chrome-bg .inner::after { background-image: url("../image/chrome.jpg"); }
+section.policies-bg .inner::after { background-image: url("../image/policies.jpg"); }
+.watermark-front {
+  position: relative;
+  z-index: 1;
+}
+
+/* セクション01の p のみ行間 1.6 */
+.watermark-front p {
+  line-height: 1.6;
+}
+
+/* セクション01 のみ：h3 の下マージンを広めに */
+.watermark-front h3 {
+  margin-bottom: 1em;
+}
+
+/* ─────────────────────────────────────────────
+   11 ポッドキャストセクション 背景画像 + フィルター
+   ───────────────────────────────────────────── */
+.podcast-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  z-index: 0;
+  pointer-events: none;
+}
+.podcast-veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 1;
+  pointer-events: none;
+}
+/* 全画面写真背景セクション（03 など） */
+.photo-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+.photo-veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1;
+  pointer-events: none;
+}
+section.photo-sec > :not(.photo-bg):not(.photo-veil):not(.sec-num) {
+  position: relative;
+  z-index: 2;
+}
+section.photo-sec > .sec-num { z-index: 2; }
+section.photo-sec h2,
+section.photo-sec h3,
+section.photo-sec p,
+section.photo-sec ul li { color: #fff; }
+section.photo-sec h3 { color: #fabe00; }
+section.photo-sec .sec-num { color: rgba(255, 255, 255, 0.7); }
+
+section.podcast > :not(.podcast-bg):not(.podcast-veil):not(.sec-num) {
+  position: relative;
+  z-index: 2;
+}
+section.podcast > .sec-num { z-index: 2; }
+/* ダーク背景にテキストを白で */
+section.podcast h2,
+section.podcast h3,
+section.podcast p,
+section.podcast ul li { color: #fff; }
+section.podcast h2 { color: #fabe00; }
+section.podcast .sec-num { color: rgba(255, 255, 255, 0.7); }
+section.podcast .chips a { background: rgba(255, 255, 255, 0.92); }
+/* リスト内テキストリンクは白文字＋下線のみ（visited でも変えない） */
+section.podcast ul li a,
+section.podcast ul li a:visited { color: #fff; text-decoration: underline; }
+
+/* ─────────────────────────────────────────────
+   08 横スライドグループ
+   ───────────────────────────────────────────── */
+.group-section {
+  height: 600vh;       /* 5パネル × 100vh + dwell */
+  min-height: 0;
+  padding: 0;
+  position: relative;
+  overflow: visible;
+  background: #0a0c1c;
+  scroll-snap-align: none;  /* パネル単位のスナップに任せる */
+}
+
+.snap-pt { scroll-snap-align: start; }
+
+.snap-pt {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+.snap-pt.p1 { top: 0; }
+.snap-pt.p2 { top: 100vh; }
+.snap-pt.p3 { top: 200vh; }
+.snap-pt.p4 { top: 300vh; }
+.snap-pt.p5 { top: 400vh; }
+
+.hgroup-pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  /* overflow:hidden だと「クリップするが横スクロール可能」な状態になり、
+     パネル内のグラフに Tab フォーカスが入った際にブラウザが横スクロールして
+     レイアウトを崩す。clip はスクロールコンテナを作らないため横スクロール不能。 */
+  overflow: clip;
+  /* 08 専用：表紙・質疑応答とは別のダークグラデ */
+  background:
+    radial-gradient(120% 90% at 80% 15%, rgba(0, 63, 136, 0.45) 0%, transparent 55%),
+    linear-gradient(135deg, #0a2347 0%, #0a0c1c 52%, #1c1030 100%);
+}
+
+.hgroup {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  transform: translateX(0);
+  will-change: transform;
+}
+
+.hpanel {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100vh;
+  padding: 6vh 6vw 16vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+.hpanel .inner { margin: 0 auto; }
+
+/* 08 内の特定パネルだけ、コンテンツを画面中央配置＆中央寄せ */
+.hpanel.hpanel-center {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* 上下中央にするため下padding(16vh)に合わせて上も同量に */
+  padding-top: 16vh;
+  padding-bottom: 16vh;
+}
+
+/* h3 ぶんを補正して h2 を画面中心に
+   transform を使うと .part-label(absolute) の基準が変わるので margin で */
+.hpanel.hpanel-center .inner {
+  margin-top: -1.6em;
+}
+
+/* 08 の文字色：背景が暗いので白系で出す */
+.hpanel h2,
+.hpanel h3,
+.hpanel p,
+.hpanel ul li { color: var(--text-on-dark); }
+.hpanel .part-label { color: var(--text-on-dark-light); }
+
+/* 08 / 4-5 のみ */
+.h2-68 {
+  font-size: 68px;
+  line-height: 1.3;
+}
+
+/* 08 / 2-5 の右側に置く矢印画像（上端合わせ） */
+.panel-arrow {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 2000vw;
+  max-width: 700px;
+  height: auto;
+  opacity: 0.2;
+  pointer-events: none;
+  left: 60%;
+}
+@media (max-width: 768px) {
+  .panel-arrow {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: none;
+    width: 1000vw;
+    max-width: 400px;
+    height: auto;
+    opacity: 0.2;
+    pointer-events: none;
+    left: 20%;
+  }
+}
+
+.part-label {
+  position: absolute;
+  top: 2vh;
+  right: 6vw;
+  font-size: 16px;
+  color: var(--text-light);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
+/* ───── チャート（08-3） ───── */
+.chart-figure {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0.6em auto 0;
+  background: #fff;
+  padding: 28px 28px 20px;
+  border-radius: 18px;
+  position: relative;
+  cursor: zoom-in;
+}
+.chart-figure img {
+  width: 100%;
+  height: auto;
+  max-height: 64vh;
+  object-fit: contain;
+  display: block;
+  border-radius: 14px;
+}
+.chart-caption {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-light);
+  margin-top: 1.2em;
+  text-align: center;
+  font-weight: 400;
+}
+/* ───── ライトボックス ───── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3vh 3vw;
+  background: rgba(0, 0, 0, 0.55);
+  cursor: zoom-out;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+.lightbox.open {
+  opacity: 1;
+  visibility: visible;
+}
+.lightbox img {
+  width: auto;
+  height: auto;
+  max-width: 97vw;
+  max-height: 94vh;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+.lb-open { overflow: hidden; }
+.lb-trigger {
+  color: var(--accent);
+  text-decoration: none;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+.lb-trigger:hover { text-decoration: underline; }
+
+/* ───── アクセシビリティ：キーボード操作 ───── */
+/* キーボード操作時のみフォーカスリングを表示（マウス時は出さない） */
+:focus-visible {
+  outline: 3px solid #0a66ff;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+/* 暗い背景のセクションでは黄色にして視認性を確保 */
+.hero :focus-visible,
+.end :focus-visible,
+section.photo-sec :focus-visible,
+section.podcast :focus-visible,
+.section-nav.on-dark a:focus-visible {
+  outline-color: #fabe00;
+}
+
+/* スキップリンク：通常は隠れ、フォーカス時のみ表示 */
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 300;
+  padding: 10px 16px;
+  background: #003f88;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform 0.2s ease;
+}
+.skip-link:focus { transform: translateY(0); }
+
+/* グラフはキーボードフォーカス可能なボタンとして扱う */
+.chart-figure { cursor: zoom-in; }
+
+/* ───── 横スライドナビ ───── */
+.hgroup-nav {
+  position: absolute;
+  bottom: 6vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  z-index: 5;
+}
+.hgroup-nav button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 22px;
+  color: var(--text-on-dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s, color 0.3s, border-color 0.3s, opacity 0.3s;
+}
+.hgroup-nav button:hover {
+  background: #fff;
+  color: var(--text);
+  border-color: #fff;
+}
+.hgroup-nav button:disabled { opacity: 0.3; cursor: default; }
+.hgroup-nav button:disabled:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-on-dark);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.hgroup-dots {
+  display: flex;
+  gap: 10px;
+}
+.hgroup-dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: width 0.3s, background 0.3s, border-radius 0.3s;
+}
+.hgroup-dots i.active {
+  background: #fff;
+  width: 26px;
+  border-radius: 4px;
+}
+
+/* ───── 右端ドットナビ ───── */
+.section-nav {
+  position: fixed;
+  top: 50%;
+  right: 28px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 90;
+}
+.section-nav a {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(134, 134, 139, 0.35);
+  transition: background 0.3s, transform 0.3s;
+  position: relative;
+  display: block;
+}
+/* タップ判定を広げる（不可視のヒットエリア） */
+.section-nav a::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 36px;
+  height: 36px;
+  transform: translate(-50%, -50%);
+}
+
+.section-nav a:hover {
+  background: rgba(134, 134, 139, 0.7);
+  transform: scale(1.3);
+}
+.section-nav a.active {
+  background: var(--accent);
+  transform: scale(1.3);
+}
+.section-nav a::after {
+  content: attr(data-label);
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 5px 11px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.section-nav a:hover::after { opacity: 1; }
+.section-nav.on-dark a { background: rgba(245, 245, 247, 0.4); }
+.section-nav.on-dark a:hover,
+.section-nav.on-dark a.active { background: #fff; }
+
+/* ───── プログレスバー ───── */
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: #fabe00;
+  z-index: 100;
+  transition: width 0.15s linear;
+}
+
+/* ───── オーブ（表紙・質疑応答の装飾） ───── */
+.orb {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(0, 113, 227, 0.4), transparent 60%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+.orb-1 { top: -200px; left: -200px; }
+.orb-2 {
+  bottom: -200px;
+  right: -200px;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 100, 200, 0.3), transparent 60%);
+}
+.hero > :not(.orb):not(.hero-bg):not(.hero-veil),
+.end > :not(.orb):not(.end-bg):not(.end-veil) { position: relative; z-index: 3; }
+
+/* ─────────────────────────────────────────────
+   モバイル（768px 以下）
+   ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  body { font-size: 16px; }
+
+  h1 { font-size: 36px; line-height: 1.4em; }
+  h2 { font-size: 34px; line-height: 1.4em; }
+  h3 { font-size: 24px; line-height: 1.5; }
+  p, ul { font-size: 20px; line-height: 1.5; }
+
+  .h2-68 { font-size: 34px; line-height: 1.4; }
+  .compare .card p { font-size: 20px; font-weight: 500; }
+  .chips a { font-size: 16px; }
+  .hero p.speaker { line-height: 1.4; }
+
+  .chart-caption { text-align: left; }
+
+  /* スマホでは全コンテンツを左寄せに統一 */
+  .hero,
+  .end,
+  .hpanel,
+  .hpanel.hpanel-center {
+    text-align: left;
+    align-items: flex-start;
+  }
+  .end-links {
+    align-items: flex-start;
+  }
+
+  section {
+    padding-right: 12vw;
+    padding-left: 4vw;
+    padding-top: 8vh;
+    padding-bottom: 6vh;
+  }
+
+  .compare {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .compare .card { padding: 28px 24px; }
+
+  .sec-num { top: 3vh; right: 6vw; }
+
+  section.search-bg,
+  section.staff-bg,
+  section.x-bg,
+  section.chrome-bg,
+  section.policies-bg { padding-bottom: 3vh; }
+  section.search-bg .inner::after,
+  section.staff-bg .inner::after,
+  section.x-bg .inner::after,
+  section.chrome-bg .inner::after,
+  section.policies-bg .inner::after { width: 100%; height: 24%; }
+
+  /* 08 のパネルは右側にナビが入るので右パディング多め */
+  .hpanel {
+    padding: 8vh 16vw 18vh 6vw;
+  }
+  .hgroup-nav button {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+
+
+  .section-nav { right: 14px; gap: 22px; }
+  .section-nav a::after { display: none; }
+  /* スマホでは更にタップ判定を広く */
+  .section-nav a::before { width: 44px; height: 44px; }
+
+
+  .podcast-bg { object-position: 60% center; }
+}
+
+/* =========================================================
+   印刷用（A4横置き、1セクション = 1ページ）
+   ========================================================= */
+@page {
+  size: A4 landscape;
+  margin: 0;
+}
+
+@media print {
+  /* 背景色・グラデ・暗幕(veil)を確実に印刷する（白文字が消えないように） */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html, body {
+    scroll-snap-type: none !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+
+  /* 固定/絶対配置の装飾は印刷時は非表示 */
+  .progress,
+  .section-nav,
+  .hgroup-nav,
+  .skip-link,
+  .orb,
+  .panel-arrow,
+  .sec-corner-img {
+    display: none !important;
+  }
+
+  /* リビールアニメーションを完了状態で固定 */
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* セクション = 1ページ */
+  section {
+    width: 297mm !important;
+    height: 210mm !important;
+    min-height: 0 !important;
+    page-break-after: always !important;
+    page-break-inside: avoid !important;
+    scroll-snap-align: none !important;
+    overflow: hidden !important;
+    box-sizing: border-box;
+  }
+
+  /* セクション08：横スライドを縦スタックの5ページに展開 */
+  .group-section {
+    height: auto !important;
+    min-height: 0 !important;
+    width: auto !important;
+    page-break-after: auto !important;
+    overflow: visible !important;
+  }
+  .hgroup-pin {
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+    background: transparent !important;
+  }
+  .hgroup {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    transform: none !important;
+    overflow: visible !important;
+  }
+  .hpanel {
+    width: 297mm !important;
+    height: 210mm !important;
+    flex: none !important;
+    page-break-after: always !important;
+    page-break-inside: avoid !important;
+    overflow: hidden !important;
+  }
+  .snap-pt { display: none !important; }
+
+  /* 表紙の背景画像は印刷に出す */
+  .hero-bg, .podcast-bg, .photo-bg, .end-bg, .hero-veil, .podcast-veil, .photo-veil, .end-veil { display: block !important; }
+  /* リンクの外枠を消す */
+  a { color: inherit; text-decoration: none; }
+  /* PC/SP 用の改行は印刷では全て無効化（1行に流す） */
+  .pc-br, .sp-br { display: none !important; }
+
+  /* 印刷時に出したくない要素に付ける汎用クラス */
+  .print-none { display: none !important; }
+
+  /* 最後のセクション後の余分な空白ページを防ぐ */
+  section:last-of-type { page-break-after: avoid !important; }
+}
